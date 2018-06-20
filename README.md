@@ -94,37 +94,7 @@ Table of contents
    4. Operator with count
    5. Whole Line Editing
    6. Summary
-5. Some Shortcuts
-   1. Undo Change
-   2. Replace
-   3. Shortcuts for deletion 
-   4. Shortcuts for change
-   5. Shortcut for Save and Quit
-   6. Appending text
-   7. New Lines 
-   8. Summary
-6. Advanced Movements
-   1. Move by screens
-      * 6.1.1 Forward one screen
-      * Backward one screen
-      * Forward half screen
-      * Backward half screen
-      * Scroll forward one line
-      * Scroll backward one line
-   2. Moving within screen
-   3. Moving to a particular line
-   4. Adjusting the cursor
-   5. Some ex commands to help viewing
-      * Line Number
-      * Jump to line 
-      * View which line you are in
-      * View total number of lines
-   6. Some more movements
-      * Moving by sentences
-      * Moving by paragraphs
-      * Moving by matching brackets
-      * Moving to a particular column in line
-   7. Summary
+
 
 #### Chapter 1 
 ---------------
@@ -1239,3 +1209,6 @@ see how to achieve in our upcoming chapters, where we'll
 talk about some shortcuts, some advance movements and some
 `ex` commands which will make your editing a lot faster and
 more conventient.
+
+
+
