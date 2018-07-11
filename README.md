@@ -94,7 +94,37 @@ Table of contents
    4. Operator with count
    5. Whole Line Editing
    6. Summary
-
+5. Some Shortcuts
+   1. Undo Change
+   2. Replace
+   3. Shortcuts for deletion 
+   4. Shortcuts for change
+   5. Shortcut for Save and Quit
+   6. Appending text
+   7. New Lines 
+   8. Summary
+6. Advanced Movements
+   1. Move by screens
+      * Forward one screen
+      * Backward one screen
+      * Forward half screen
+      * Backward half screen
+      * Scroll forward one line
+      * Scroll backward one line
+   2. Moving within screen
+   3. Moving to a particular line
+   4. Adjusting the cursor
+   5. Some ex commands to help viewing
+      * Line Number
+      * Jump to line 
+      * View which line you are in
+      * View total number of lines
+   6. Some more movements
+      * Moving by sentences
+      * Moving by paragraphs
+      * Moving by matching brackets
+      * Moving to a particular column in line
+   7. Summary
 
 #### Chapter 1 
 ---------------
@@ -210,7 +240,7 @@ process until you have finished.
 -------------------------
 This book is an ongoing project, if you find any mistake or
 you have a suggestion please raise an issue here -
-https://github.com/weathered-paperweight/vi/issues
+https://github.com/weathered-paperweight/vi-essentials/issues
 Your changes and suggestions may get into future releases.
 
 1.7 Colophon
@@ -1209,6 +1239,597 @@ see how to achieve in our upcoming chapters, where we'll
 talk about some shortcuts, some advance movements and some
 `ex` commands which will make your editing a lot faster and
 more conventient.
+
+
+### Chapter 5 
+-------------
+
+Some Shortcuts
+=================
+It is actually boring and frustrating to edit a lot of
+text. While manipulating text, user can employ some shortcuts to
+ease some tasks. At times, these save users from repetitive
+tasks and some of them are better to there long
+counterparts. In this chapter, we will discover some of
+these time saving shortcuts. 
+
+A word of caution, if you are not habituated with all the 
+basic movements, change operators, and ex commands that we
+covered in chapters through 2 to 4, you are strongly
+recommended to go back and review them, apply them in your
+day to day needs. Until those become your second nature,
+you should not proceed ahead.
+
+5.1 Undo Change
+---------------
+Having an option to undo a change is a life saver at times.
+Let's say by mistake you deleted a whole line and you don't
+know what was written in the line. If you do not know how to
+undo a change, you are lost and you use `<Esc> :q!` to quit
+and discard all the changes. If you have not saved your work
+periodically, unfortunately you have to redo all the required
+changes. Horrible idea...  
+Don't worry vi editor designers may have faced the situation
+and covered this scenario. They designed to use `u` as a 
+command to undo the last change.  
+While in Normal Mode, if you hit `u`, your last change will be
+undone. Let's try this in a practical way. We will start with
+a fresh copy of the limerick, we were working on chapter 4.
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+Now let's delete the third line of the limerick. You use `dd`
+to do that once you are in third line by using movement
+command `j` or `k`. The text in the editor looks like the
+following after deletion-
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+Now hit `u` key while you are in Normal mode and the line
+comes back to the original position -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+Now let's delete a word and use `u` command -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|                                                     |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+We have now deleted the word "doubt" in fourth line, we can now use
+`u` command to restore it.
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+That's how you can undo your change in vi editor.  
+
+There is also a line variation of undo command. In this
+case, the editor undoes changes made to a whole line and
+restores it.
+
+For example, let's say we delete the word shut in second
+line and deleted the word wife in the same line. Now if you
+want to undo the change, you can only restore the word wife
+but not the word shut (in vim editor you can do this by 
+using multi level undo but that's out of scope of this book).
+In that case, you can restore the whole line using `U` 
+command. `U` command restores the whole line.
+
+Let's try this now. Below we deleted the words shut and wife
+from second line -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who his up in a box:                                 |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+We try the `u` command -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who his Wife up in a box:                            |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+This only restored the word wife but not the word shut.
+
+Now we'll try `U` command -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+This time, to restore the whole line, `U` command was used in
+Normal mode and it restored not only the last change but
+also the other change made to the line.
+
+These are the ways to undo changes in vi editor. Try them
+with different changes and move on to the next section.
+
+5.2 Replace
+-----------
+Now we'll talk about replacing character in a text content.
+Changing a character in text content is achievable using `c`
+command and movement command but replacing it in Normal mode
+is a better way, you save some keystrokes and hassle of
+switching between Insert mode and Normal mode. In vi editor
+you can change character or even a whole word without
+switching mode. To do that, there is a replace command. In
+normal mode, move to the desired character and hit `r`
+follwed by the replacement character. Let's change a
+character in the limerick we are using -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in a box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+Let's change the character `a` in second line to `1`. To do
+this, we move to the character using `h`,`j`,`k`,`l` commands and 
+then press `r`, then press `1` and the character `a` gets
+replaced by `1` -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in 1 box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+There is a longer version of replace also. You can use `R` to
+change a sequence of characters. Keep in mind that, when you
+want a longer replace, you can only change the same number
+of characters, for example, you can not change character 'a'
+by the word "the" because, it contains 3 characters while
+'a' contains only one. Also remember, you have to move back
+to Normal mode using `Ctrl+[` or `<Esc>` key after you are done
+with `R` command. Let's try some hands-on with the limerick -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in 1 box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in that box."            |
++-----------------------------------------------------+
+```
+We'll change the last line of the limertick and replace the
+word "that" to "the", now you can immediately think how we 
+can do that as the two words differ in character count.
+Actually we'll use a space after the word "the". That will
+fill the gap of 4 characters and 3 characters. So there
+we'll be two spaces before the last word in the limerick.
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
+|Who shut his Wife up in 1 box:                       |
+|When she said, "Let me out," he exclaimed, "Without  |
+|doubt                                                |
+|You will pass all your life in the  box."            |
++-----------------------------------------------------+
+```
+Remember to hit `<Esc>` or `Ctrl+[` after you are done.
+
+5.3 Shortcuts for deletion 
+--------------------------
+While replacing a character or a sequence of characters
+makes editing simpler, there are still ways which makes vi
+editor elegant. For example, you have to use `<Delete>`  or
+`<Backspace>` keys to delete single characters in Normal mode
+and Insert mode respectively, but they take a longer to 
+reach than alphabets. So, vi editor uses alphabets to solve
+this problem as well. You can use `dh` and `dl` to delete a 
+single character. These are better still not best. Now
+we'll see how we can delete character using a single key hit.
+In Normal mode, you can use `x` to delete the 
+character which is above the cursor. This does the same job
+of `<Delete>` key. In Normal mode, you cannot use
+`<Backspace>` key to delete a character. In Normal mode, 
+`<Backspace>` and `h` does the same job, which is to move
+the cursor one character left. To delete characters on left
+of the cursor, you can use `X` in Normal mode. In Insert
+Mode, you can use `<Backspace>`.
+To delete until the end of a line, we use `d$`. There is
+shortcut for that too. You can use `D` for the same effect.
+You can remember the following table of shortcuts -
+```
++--------------------------------------+ 
+| Longer Version     | Shorcut         |
+|--------------------------------------|
+| dl                 | x               |
+|--------------------------------------|
+| dh                 | X               |
+|--------------------------------------| 
+| d$                 | D               |
++--------------------------------------+
+```
+Remember that, the shortcuts also can be used to work with a
+count as well. So, `5x` will delete 5 characters on the right 
+of cursor and `5X` will delete 5 characters on the left of 
+the cursor.
+
+5.4 Shortcuts for change
+------------------------
+There are shorcuts for change commands as well. For changing
+a single character, you can use `s` command, which works as
+`cl`. The shortcut for `c$` is `C`, which deletes until the end of
+the line from cursor position and puts you in Insert mode.
+The shortcut command for `cc` is `S` which deletes the whole line
+and changes to Insert mode. 
+You can remember the following table for change shortcuts -
+```
++--------------------------------------+ 
+| Longer Version     | Shorcut         |
+|--------------------------------------|
+| cl                 | s               |
+|--------------------------------------|
+| c$                 | C               |
+|--------------------------------------| 
+| cc                 | S               |
++--------------------------------------+ 
+```
+5.5 Shortcut for Save and Quit
+------------------------------
+While we are talking about shorcuts, this one deserves a
+mention. When you want to save your changes to a file, you
+need `<Esc> :wq` which is a bit of typing, You can do the same
+with `<Esc> ZZ`. `ZZ` is easier to type than `:wq`.
+```
++--------------------------------------+
+| Longer Version     | Shorcut         |
+|--------------------------------------|
+| <Esc>:wq           | <Esc>ZZ         | 
++--------------------------------------+
+```
+5.6 Appending text
+------------------
+There are instances, you need to add text after the cursor.
+For example, you want to add a new word in the end of a
+line, how would you do that?
+You move to end of line using `$`, press `i` to change to Insert
+mode, then you search for the right arrow key on your key
+board and start typing new characters.  
+
+Wait, I have to use arrow keys, not a good way, isn't so?
+Yes, that is not a good way. That's why vi editor comes with
+concept of appending texts. Go to the end of the line using
+`$`, hit `a` and the cursor moves to the right and editor is 
+in Insert mode, you start typing and it appends the text to the 
+line. The similar can be done to anywhere in the line, `a`
+command shifts the cursor to the right and changes the editor
+in Insert mode.
+
+In some cases, you may be in between a line and want to
+append text at the end of the line. You can do that by
+pressing `$` which takes you to the end of the line and hit
+`a` which allows you to append text. But you can still make
+the process shorter, by using `A`, which works the
+same way as `$a` does. 
+
+You can also add text in the beginning of a line by using
+`I` command. Which is a shortcut for `0i`.
+```
++--------------------------------------+
+| Longer Version     | Shorcut         |
+|--------------------------------------|
+| i<Right Arrow>     | a               |
+|--------------------------------------|
+| $i<Right Arrow>    | A               |
+|--------------------------------------|
+| 0i                 | I               |
++--------------------------------------+
+```
+5.7 New Lines 
+-------------
+In some cases, you may have to add a new line in between two
+lines and you might also have done that while you were editing
+texts in earlier sections. The usual way to do that is to
+follow either - `$i→<Enter>` or `0i<Enter>`. Depending on the
+command sequence used, it starts an empty line below or
+above the current line and you have to move to that line
+either using arrow key or using `j` or `k` command in Normal mode.
+But these can be achieved in an extremely short manner with
+just one key hit. Use `o` to start a blank line below the
+current line and `O` to start a blank line above the current
+line. The editor is automatically changed to Insert Mode.
+
+The shortcut table for this is as follows-  
+```
++----------------------------------------+
+| Longer Version                | Shorcut|
+|----------------------------------------|
+| $i<Right Arrow><Enter><Esc>j  | o      |
+|      or                       |        |
+| A<Enter><Esc>j                |        |
+|----------------------------------------|
+| 0i<Enter><Esc>k               | O      |
+|      or                       |        |
+|I<Enter><Esc>k                 |        |
++----------------------------------------+
+```
+
+5.8 Summary 
+-----------
+In this chapter we walked through some shortcuts to some
+tedious editing command combinations. We also discovered
+ways to undo a change.
+
+In next chapters, we'll talk about some advanced
+movement and editing commands and also we'll talk about some
+`ex` commands which make editing task convenient.
+
+### Chapter 6
+--------------
+
+Advanced Movements
+==================
+In the last 5 chapters we have covered the basic movements
+and editing commands that you can perform using vi. In this
+chapter we'll talk about some more movements which are a
+little advance in nature. Here you will learn how to move
+by screens, go to a particular line, adjust your screen for
+viewing purpose etc. These will make your editing faster
+than before. Remember, these all are movement commands. So,
+all of them work in Normal mode.
+
+6.1 Move by screens
+-------------------
+Earlier we have seen how to move by lines, characters, words
+etc. Using these movements you can move anywhere in the
+content but it takes time. Here we'll discuss how to move by
+screens. That means, you can move one full or half screen at
+a time or in other terms, you can scroll texts. 
+The following are the ways to do that,
+
+### 6.1.1 Forward one screen
+If you have opened a very long text, which spans across
+more than one screen and you are done editing with the first
+screen, you have to move to the next screen. You can
+move to the next screen by using `j`/`k` but that will take time.
+The elegant and more popular way is to use shortcut.
+vi editor assigns `Ctrl+F` combination to move forward one
+screen. So, once you are done with first screen and hit
+`Ctrl+F`, text in the screen gets replaced
+with text from the next part of the file.
+ 
+### 6.1.2 Backward one screen
+In case, you want to go back and want to see what was there in the
+earlier screen, you can use `Ctrl+B` combination. It
+replaces the text in the screen with the previous chunk
+of text.
+ 
+### 6.1.3 Forward half screen
+In times, it is convenient to have the last part of the
+first screen to be visible while reading/editing the first part
+of the second screen. In these cases, you can use `Ctrl+D`
+combination. It will replace the first half of the
+screen with text from the second half of the current screen and in
+the second half of the screen will show the first half
+of the next chunk.
+
+### 6.1.4 Backward half screen
+Like forward half screen, there is a backward version of
+it as well, `Ctrl+U` replaces the first half of the screen
+with the text from the last half of the last screen and
+the last half of the screen will retain the text from
+the first half of the current screen.
+ 
+### 6.1.5 Scroll forward one line
+Like whole screen, you can also scroll one line. `Ctrl+E`
+works to scroll forward one line.
+
+### 6.1.6 Scroll backward one line
+Scrolling backward one line is achieved using  `Ctrl+Y`.
+
+Try these scroll commands in Normal mode while using vi
+editor. These are real time savers.
+
+6.2 Moving within screen
+------------------------
+Scrolling is useful when you want to quickly move between
+screens. But what about moving within a screen?  
+vi also helps in that, you can move to the top, middle or
+bottom of screen.  
+`H`- moves the cursor to the top of the screen  
+`M` - moves the cursor in the middle of the screen  
+`L` - moves the cursor to the last line of the screen  
+
+`H` and `L` can also work with a count. To move to the fourth
+line from the top, you can use `4H`, it will move the cursor
+to the fourth line from top. To move to 5 lines above the
+bottom, you use `5L`.
+
+6.3 Moving to a particular line
+-------------------------------
+If you want to move to a particular line, you can do so in
+vi editor. This is quite useful for programmers who get
+compiler errors in a particular line. To go to a particular
+line, follow this pattern `nG`, where n is the line number
+you want to jump to.  
+For example, to go to line 12, we use `12G` or to go to line
+5, we use `5G`. To go to the last line of the file, use `G`.
+To know which line, you are in, use `Ctrl+G` combination. This
+will show you file status information in the bottom of the
+screen. There you can see the position of the cursor.
+
+6.4 Adjusting the cursor
+------------------------
+Scrolling around the file, jumping to lines, moving within
+screen moves the cursor heavily and sometimes this may be
+inconvenient. To solve this you may want to reposition
+the cursor acocording to your choice for editing purpose.
+This can be done by `z` command.   
+z has three positions to move the cursor to and scroll the
+file accordingly.
+```
+z. - moves the current line to the middle of the screen and
+     scroll text as required
+z- - moves the current line to the end of the screen and
+     scroll text as required
+z<Enter> - moves the current line to the top of the  screen
+           and scrolls accordingly
+```
+6.5 Some ex commands to help viewing
+------------------------------------
+At this point, it can be safely assumed that, you are pretty
+familiar with vi editor and you can employ vi editor to do a 
+lot of udeful stuffs using it, may be you already have started using vi in
+your day to day editing needs. Now comes, a bunch of ex
+commands which makes your editing a little more convenient.  
+While you have opened a file and navigating through it using
+screen movement, line jump commands etc., it is
+really convenient to see the line number the cursor is in.
+You can use commands in `ex` mode to view line details of
+file.
+### 6.5.1 Line Number
+Till now we have used ex commands to save files and/or
+exit editor. Now we'll learn how to use ex commands to
+change the behavior of the editor. These are also known
+as configuration.  
+The first one to learn is `set number` command. This
+command shows line number before each line. To run this,
+change the mode to ex mode by `<Esc>` or `Ctrl+[` and then
+press `:` then type `set number` and hit `<Enter>` and the
+editor will show line number before each line of text. These
+numbers are not part of the file opened in vi editor. These
+are numbers given to each line of text by vi editor.  
+To stop showing line number, use `set nonumber` command in
+`ex` mode.
+
+### 6.5.2 Jump to line 
+There are times when you need to move to a particular
+line. This can be done using `nG` command where n
+represents the line number you want to move to. But it 
+can be done using ex commands as well. Depending on the
+situation, you can use either. To move to a particular
+line using ex command, you can use `:n` command where n
+represents the line number you want to move to. For 
+example, if you type `:15` while you are in command mode
+it takes the cursor to line number 15.
+
+### 6.5.3 View which line you are in
+This is a variant of `Ctrl+G` command. This command will
+tell you in which line you are in. While in command mode,
+type `:.=` to find the current line the cursor is in. This
+is part of ex editor command set and is not very common in
+use but at times can prove to be useful.
+
+### 6.5.4 View total number of lines
+While you are in vi editor and you want to know the total
+number of lines the file contains, you can do so by using
+`Ctrl+G` or if you have `set number`, then using `G` will
+show you the total number of lines the file contains. There
+is also another way to view this information and that is
+using ex command.  
+The command to show total number of lines in the editor
+is `:=`  
+
+`Ctrl+G` shows the combined output of this command and 
+the previous one.
+
+6.6 Some more movements
+-----------------------
+Until now we have discussed a lot of movement commands. We are
+only left with a few commands which we'll cover in this
+section and conclude this chapter.  
+
+### 6.6.1 Moving by sentences
+While you are working on a long text file, you may need
+to move between sentences or paragraphs. You can use `(`
+and `)` to move between sentences. The `(` command moves the
+cursor to the beginning of the current or previous 
+sentence while `)` moves to the beginning of the next
+sentence.
+
+### 6.6.2 Moving by paragraphs
+Working with long texts comes with a lot of maintenance
+headache with it. So, you need powerful tools to move 
+around the content. While moving by words, lines, screens and
+sentences make things easier, it is not sufficient. vi
+editor thus comes with one more useful command which
+moves cursor back and forth between paragraphs. You can 
+use `{` and `}` to move between paragraphs. `{` command moves 
+the cursor to the beginning of the current or previous
+paragraph while `}` moves the cursor to the beginnig of the
+next paragraph.
+
+### 6.6.3 Moving by matching brackets
+This movement is useful for programmers. This commands
+move the cursor to the matching bracket. If the cursor 
+is right now under a bracket (`(){}[]`) then typing `%` moves
+the cursor to the matching pair of it. For example if the
+cursor is below `{` then typing `%` will move the cursor to
+the matching bracket, i.e `}` 
+
+### 6.6.4 Moving to a particular column in line
+Each character takes some place in the file. While we can
+move by lines, we also have choice to move by
+columns in a line. Usually, a visible character takes one
+column but for special characters like `<tab>` takes more
+than one. To move to particular column in a line, we use
+`n|` command, where n represents the column number to move
+to.  
+
+For example, in the following line, we want to move to
+column 5, we use `5|` and the cursor moves under the end of
+the first word -
+```
++-----------------------------------------------------+
+|There was an Old Man on some rocks,                  |
++-----------------------------------------------------+
+```
+6.7 Summary
+-----------
+In this chapter, we have seen some advanced movements to
+faciliatate our editing tasks. Remember that, most of these
+can be used in conjunction with edit commands like `d`, `c`
+and `y`. Once you are accustomed with these advanced movement
+commands, you have a pretty big editing toolset at your
+fingertips which you can employ to ease your editing job. In
+next chapter we'll look into some more editing commands
+which will make your job even  easier.
+
+
 
 
 
